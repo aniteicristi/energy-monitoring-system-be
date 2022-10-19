@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DevicesService } from './devices.service';
-import { CreateDeviceDto } from './dto/create-device.dto';
-import { UpdateDeviceDto } from './dto/update-device.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from "@nestjs/common";
+import { JwtAuthGuard } from "src/auth/jwt.guard";
+import { DevicesService } from "./devices.service";
+import { CreateDeviceDto } from "./dto/create-device.dto";
+import { UpdateDeviceDto } from "./dto/update-device.dto";
 
-@Controller('devices')
+@UseGuards(JwtAuthGuard)
+@Controller("devices")
 export class DevicesController {
   constructor(private readonly devicesService: DevicesService) {}
 
@@ -17,18 +19,23 @@ export class DevicesController {
     return this.devicesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get("user/:id")
+  getForUser(@Param("id") id: string) {
+    return this.devicesService.findForUser(+id);
+  }
+
+  @Get(":id")
+  findOne(@Param("id") id: string) {
     return this.devicesService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDeviceDto: UpdateDeviceDto) {
+  @Patch(":id")
+  update(@Param("id") id: string, @Body() updateDeviceDto: UpdateDeviceDto) {
     return this.devicesService.update(+id, updateDeviceDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(":id")
+  remove(@Param("id") id: string) {
     return this.devicesService.remove(+id);
   }
 }
