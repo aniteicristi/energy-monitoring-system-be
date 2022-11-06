@@ -21,7 +21,7 @@ export class Device {
   @Column()
   address: string;
 
-  @Column()
+  @Column({ default: 0 })
   maximumHourlyConsumption: number;
 
   @ManyToOne(() => User, {

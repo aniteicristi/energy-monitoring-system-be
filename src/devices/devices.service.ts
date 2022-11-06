@@ -19,12 +19,28 @@ export class DevicesService {
     return this.deviceRepository.createQueryBuilder("device").where("device.userId = :userId", { userId }).getMany();
   }
 
+  findForNotUser(userId: number) {
+    return this.deviceRepository.createQueryBuilder("device").where("device.userId is null").getMany();
+  }
+
+  async associate(userId: number, deviceId: number) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const device = await this.deviceRepository.findOne({ where: { id: deviceId } });
+    device.user = user;
+    return this.deviceRepository.save(device);
+  }
+
+  async disassociate(deviceId: number) {
+    const device = await this.deviceRepository.findOne({ where: { id: deviceId }, relations: ["user"] });
+    device.user = null;
+    return this.deviceRepository.save(device);
+  }
+
   async create(createDeviceDto: CreateDeviceDto) {
     const device = new Device({
       description: createDeviceDto.description,
       address: createDeviceDto.address,
       maximumHourlyConsumption: createDeviceDto.maximumHourlyConsumption,
-      user: await this.userRepository.findOne({ where: { id: createDeviceDto.userId } }),
     });
     return await this.deviceRepository.save(device);
   }
@@ -46,6 +62,7 @@ export class DevicesService {
   }
 
   remove(id: number) {
-    return this.userRepository.delete(id);
+    console.log(id);
+    return this.deviceRepository.delete(id);
   }
 }

@@ -6,7 +6,6 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./entities/user.entity";
 import * as bcrypt from "bcrypt";
 import { Device } from "src/devices/entities/device.entity";
-import { use } from "passport";
 
 @Injectable()
 export class UsersService {
@@ -21,7 +20,7 @@ export class UsersService {
     const user = new User({
       email: createUserDto.email,
       passwordHash: await bcrypt.hash(createUserDto.password, 10),
-      role: "regular",
+      role: "user",
     });
     return this.userRepository.save(user);
   }
@@ -66,7 +65,7 @@ export class UsersService {
     const user = await this.findOne(id);
     if (updateUserDto.email) user.email = updateUserDto.email;
     if (updateUserDto.password) user.passwordHash = await bcrypt.hash(updateUserDto.password, 10);
-    await this.userRepository.save(user);
+    return await this.userRepository.save(user);
   }
 
   remove(id: number) {

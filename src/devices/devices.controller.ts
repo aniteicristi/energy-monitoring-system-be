@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/jwt.guard";
 import { DevicesService } from "./devices.service";
 import { CreateDeviceDto } from "./dto/create-device.dto";
@@ -22,6 +22,21 @@ export class DevicesController {
   @Get("user/:id")
   getForUser(@Param("id") id: string) {
     return this.devicesService.findForUser(+id);
+  }
+
+  @Get("not-user/:id")
+  getForNotUser(@Param("id") id: string) {
+    return this.devicesService.findForNotUser(+id);
+  }
+
+  @Post("associate")
+  associate(@Body() q: any) {
+    return this.devicesService.associate(q.userId, q.deviceId);
+  }
+
+  @Delete("disassociate/:id")
+  disassociate(@Param("id") id: string) {
+    return this.devicesService.disassociate(+id);
   }
 
   @Get(":id")
