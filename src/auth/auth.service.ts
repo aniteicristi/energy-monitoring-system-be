@@ -17,8 +17,10 @@ export class AuthService {
   }
 
   async login(user: User) {
+    const { passwordHash, devices, ...data } = user;
+    const token = this.jwtService.sign(data);
     return {
-      access_token: this.jwtService.sign(user),
+      token,
     };
   }
 }

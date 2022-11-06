@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  mysql-debug:
+    image: mysql:8
+    container_name: backend
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      TZ: Europe/Bucharest
+    ports:
+      - 3306:3306
+    # security_opt:
+    #   - seccomp:unconfined
+    # cap_add:
+    #   - SYS_NICE
+    volumes:
+      - backend:/var/lib/mysql_stocks_wiki
+    profiles:
+      - debug
+  adminer:
+    image: adminer:4.8.1
+    container_name: backendadminer
+    environment:
+      - ADMINER_DEFAULT_SERVER=mysql-debug
+    ports:
+      - 8081:8080
+    profiles:
+      - debug
+volumes:
+  backend:
+ 

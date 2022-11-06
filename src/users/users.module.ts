@@ -9,6 +9,6 @@ import { Device } from "src/devices/entities/device.entity";
   imports: [TypeOrmModule.forFeature([User, Device])],
   controllers: [UsersController],
   providers: [UsersService],
-  exports: [UsersModule],
+  exports: [UsersService],
 })
 export class UsersModule {}
