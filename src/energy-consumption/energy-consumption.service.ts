@@ -24,7 +24,7 @@ export class EnergyConsumptionService {
 
   create(dto: CreateEnergyConsumptionDto) {
     return this.energyRepository.save({
-      timestamp: dto.timestamp ? new Date(dto.timestamp) : new Date(),
+      timestamp: !!dto.timestamp ? new Date(dto.timestamp) : new Date(),
       value: dto.value,
       device: { id: dto.deviceId },
     });

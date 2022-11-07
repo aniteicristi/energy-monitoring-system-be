@@ -3,12 +3,16 @@ import { EnergyConsumptionService } from "./energy-consumption.service";
 import { CreateEnergyConsumptionDto } from "./dto/create-energy-consumption.dto";
 import { UpdateEnergyConsumptionDto } from "./dto/update-energy-consumption.dto";
 import { JwtAuthGuard } from "src/auth/jwt.guard";
+import { Roles } from "src/auth/roles.decorator";
+import { Role } from "src/auth/roles.enum";
+import { RolesGuard } from "src/auth/roles.guard";
 
-@UseGuards(JwtAuthGuard)
 @Controller("energy-consumption")
 export class EnergyConsumptionController {
   constructor(private readonly energyConsumptionService: EnergyConsumptionService) {}
 
+  @Roles(Role.User, Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get("/device/:id")
   getByDevice(@Param("id") deviceId: string) {
     return this.energyConsumptionService.findForDevice(+deviceId);
