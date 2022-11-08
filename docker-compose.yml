@@ -1,36 +1,45 @@
 version: '3.9'
-
 services:
   mysql-debug:
     image: mysql:8
-    container_name: backend
+    container_name: nestjs
     env_file:
       - .env
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: sd
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
       TZ: Europe/Bucharest
     ports:
       - 3306:3306
-    # security_opt:
-    #   - seccomp:unconfined
-    # cap_add:
-    #   - SYS_NICE
     volumes:
-      - backend:/var/lib/mysql_stocks_wiki
+      - nestjs:/var/lib/mysql_stocks_wiki
     profiles:
       - debug
-  adminer:
-    image: adminer:4.8.1
-    container_name: backendadminer
+    networks:
+      - nestjs-network
+  api:
+    container_name: "hrm_api_${NODE_ENV}"
+    image: "hrm_api_${NODE_ENV}"
     environment:
-      - ADMINER_DEFAULT_SERVER=mysql-debug
+      - NODE_ENV:${NODE_ENV}
+    build:
+      context: ./
+      target: "${NODE_ENV}"
+      dockerfile: Dockerfile
+    entrypoint: ["npm", "run", "start:${NODE_ENV}"]
+    env_file:
+      - .env
     ports:
-      - 8081:8080
-    profiles:
-      - debug
+      - 3000:3000
+    networks:
+      - nestjs-network
+    volumes:
+      - ./app:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
 volumes:
-  backend:
- 
+  nestjs:
+networks:
+  nestjs-network: 

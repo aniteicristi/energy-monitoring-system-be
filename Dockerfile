@@ -1,20 +1,28 @@
-# Base image
-FROM node:18
+FROM node:fermium-alpine as dev
 
-# Create app directory
+
 WORKDIR /usr/src/app
-
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 
-# Install app dependencies
 RUN npm install
 
-# Bundle app source
 COPY . .
 
-# Creates a "dist" folder with the production build
 RUN npm run build
 
-# Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+FROM node:fermium-alpine as prod
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install --production
+
+COPY . .
+
+COPY --from=dev /usr/src/app/dist ./dist
+
+CMD ["node", "dist/main"]
