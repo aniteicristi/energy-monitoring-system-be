@@ -2,21 +2,19 @@ version: '3.9'
 services:
   mysql-debug:
     image: mysql:8
-    container_name: nestjs
+    container_name: db
     env_file:
       - .env
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: sd
-      MYSQL_USER: root
-      MYSQL_PASSWORD: password
-      TZ: Europe/Bucharest
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=sd
+      # TZ: Europe/Bucharest
     ports:
       - 3306:3306
-    volumes:
-      - nestjs:/var/lib/mysql_stocks_wiki
-    profiles:
-      - debug
+    # volumes:
+    #   - nestjs:/var/lib/mysql_stocks_wiki
+    # profiles:
+    #   - debug
     networks:
       - nestjs-network
   api:
@@ -24,10 +22,10 @@ services:
     image: "hrm_api_${NODE_ENV}"
     environment:
       - NODE_ENV:${NODE_ENV}
-    build:
-      context: ./
-      target: "${NODE_ENV}"
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./
+    #   target: "${NODE_ENV}"
+    #   dockerfile: Dockerfile
     entrypoint: ["npm", "run", "start:${NODE_ENV}"]
     env_file:
       - .env
@@ -36,8 +34,9 @@ services:
     networks:
       - nestjs-network
     volumes:
-      - ./app:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./:/app/project
+    depends_on:
+      - mysql-debug
     restart: unless-stopped
 volumes:
   nestjs:

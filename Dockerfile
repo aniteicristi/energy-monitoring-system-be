@@ -1,28 +1,28 @@
-FROM node:fermium-alpine as dev
+FROM node:14 as dev
 
 
-WORKDIR /usr/src/app
-COPY package*.json ./
+WORKDIR /app/project
+COPY package.json .
 
 RUN npm install
 
 COPY . .
+CMD npm start
+# RUN npm run build
 
-RUN npm run build
+# FROM node:fermium-alpine as prod
 
-FROM node:fermium-alpine as prod
+# ARG NODE_ENV=production
+# ENV NODE_ENV=${NODE_ENV}
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+# WORKDIR /usr/src/app
 
-WORKDIR /usr/src/app
+# COPY package*.json ./
 
-COPY package*.json ./
+# RUN npm install --production
 
-RUN npm install --production
+# COPY . .
 
-COPY . .
+# COPY --from=dev /usr/src/app/dist ./dist
 
-COPY --from=dev /usr/src/app/dist ./dist
-
-CMD ["node", "dist/main"]
+# CMD ["node", "dist/main"]
