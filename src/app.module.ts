@@ -1,3 +1,5 @@
+import { RabbitMQService } from "./rabbitmq/rabbitmq.service";
+import { RabbitMQController } from "./rabbitmq/rabbitmq.controller";
 import { Module } from "@nestjs/common";
 import { UsersModule } from "./users/users.module";
 import { DevicesModule } from "./devices/devices.module";
