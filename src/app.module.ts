@@ -6,6 +6,7 @@ import { DevicesModule } from "./devices/devices.module";
 import { EnergyConsumptionModule } from "./energy-consumption/energy-consumption.module";
 import { AuthModule } from "./auth/auth.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { NotifierModule } from "./notifier/notifier.module";
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
     DevicesModule,
     EnergyConsumptionModule,
     AuthModule,
+    NotifierModule,
     TypeOrmModule.forRoot({
       type: "mysql",
       host: "mysql-debug",

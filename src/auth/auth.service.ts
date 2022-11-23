@@ -23,4 +23,9 @@ export class AuthService {
       token,
     };
   }
+
+  getUserDataFromToken(token: string) {
+    const user = this.jwtService.decode(token);
+    return user;
+  }
 }
