@@ -6,10 +6,11 @@ import { JwtAuthGuard } from "src/auth/jwt.guard";
 import { Roles } from "src/auth/roles.decorator";
 import { Role } from "src/auth/roles.enum";
 import { RolesGuard } from "src/auth/roles.guard";
+import { NotifierGateway } from "src/notifier/notifier.gateway";
 
 @Controller("energy-consumption")
 export class EnergyConsumptionController {
-  constructor(private readonly energyConsumptionService: EnergyConsumptionService) {}
+  constructor(private readonly energyConsumptionService: EnergyConsumptionService, private readonly gateway: NotifierGateway) {}
 
   @Roles(Role.User, Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -26,5 +27,10 @@ export class EnergyConsumptionController {
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.energyConsumptionService.remove(+id);
+  }
+
+  @Get("/test/:id")
+  test(@Param("id") usr: number) {
+    return this.gateway.sendNotificaiton(usr, "hello!");
   }
 }

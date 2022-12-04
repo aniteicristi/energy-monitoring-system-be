@@ -1,12 +1,11 @@
-import { Server } from "@nestjs/microservices";
 import { InjectRepository } from "@nestjs/typeorm";
 import { OnGatewayConnection, OnGatewayDisconnect, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { AuthService } from "src/auth/auth.service";
 import { Repository } from "typeorm";
 import { Session } from "./entities/session.entity";
 
-@WebSocketGateway(80, {
+@WebSocketGateway({
   cors: {
     origin: "*",
   },
@@ -18,19 +17,14 @@ export class NotifierGateway implements OnGatewayConnection, OnGatewayDisconnect
   server: Server;
 
   async handleConnection(client: Socket) {
-    const user = this.authService.getUserDataFromToken(client.handshake.headers.authorization.replace("Bearer ", ""));
-
-    const sesh = new Session({
-      socketId: client.id,
-      userId: user["id"],
-    });
-    await this.sessionRepository.save(sesh);
+    console.log("connected!");
   }
 
   async handleDisconnect(client: Socket) {
-    const user = this.authService.getUserDataFromToken(client.handshake.headers.authorization.replace("Bearer ", ""));
-    await this.sessionRepository.delete(user["id"]);
+    console.log("disconnected!");
   }
 
-  async sendNotificaiton() {}
+  async sendNotificaiton(userId: number, message: string) {
+    this.server.emit(`notify:${userId}`, message);
+  }
 }

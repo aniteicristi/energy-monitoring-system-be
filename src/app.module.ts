@@ -17,10 +17,10 @@ import { NotifierModule } from "./notifier/notifier.module";
     NotifierModule,
     TypeOrmModule.forRoot({
       type: "mysql",
-      host: "mysql-debug",
+      host: "localhost", //mysql-debug
       port: 3306,
       username: "root",
-      password: "admin",
+      password: "password", //admin
       database: "sd",
       autoLoadEntities: true,
       synchronize: true,
