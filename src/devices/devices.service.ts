@@ -50,7 +50,7 @@ export class DevicesService {
   }
 
   findOne(id: number) {
-    return this.deviceRepository.findOne({ where: { id } });
+    return this.deviceRepository.findOne({ where: { id }, relations: ["user"] });
   }
 
   async update(id: number, updateDeviceDto: UpdateDeviceDto) {

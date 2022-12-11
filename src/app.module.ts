@@ -1,5 +1,3 @@
-import { RabbitMQService } from "./rabbitmq/rabbitmq.service";
-import { RabbitMQController } from "./rabbitmq/rabbitmq.controller";
 import { Module } from "@nestjs/common";
 import { UsersModule } from "./users/users.module";
 import { DevicesModule } from "./devices/devices.module";
@@ -7,6 +5,7 @@ import { EnergyConsumptionModule } from "./energy-consumption/energy-consumption
 import { AuthModule } from "./auth/auth.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { NotifierModule } from "./notifier/notifier.module";
+import { RmqModule } from "./rmq/rmq.module";
 
 @Module({
   imports: [
@@ -15,6 +14,7 @@ import { NotifierModule } from "./notifier/notifier.module";
     EnergyConsumptionModule,
     AuthModule,
     NotifierModule,
+    RmqModule,
     TypeOrmModule.forRoot({
       type: "mysql",
       host: "localhost", //mysql-debug

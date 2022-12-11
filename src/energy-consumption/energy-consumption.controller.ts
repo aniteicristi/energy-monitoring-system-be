@@ -31,6 +31,6 @@ export class EnergyConsumptionController {
 
   @Get("/test/:id")
   test(@Param("id") usr: number) {
-    return this.gateway.sendNotificaiton(usr, "hello!");
+    return this.gateway.sendNotification(usr, "hello!");
   }
 }

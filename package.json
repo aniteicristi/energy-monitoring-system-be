@@ -22,6 +22,7 @@
     "seed:dev": "ts-node -r tsconfig-paths/register src/seeders/seed.ts"
   },
   "dependencies": {
+    "@golevelup/nestjs-rabbitmq": "^3.4.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/jwt": "^9.0.0",
@@ -35,6 +36,7 @@
     "amqp-connection-manager": "^4.1.9",
     "amqplib": "^0.10.3",
     "bcrypt": "^5.1.0",
+    "date-fns": "^2.29.3",
     "mysql2": "^2.3.3",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",

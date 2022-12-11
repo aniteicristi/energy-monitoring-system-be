@@ -17,7 +17,7 @@ export class EnergyConsumption {
   @Column({ type: "datetime" })
   timestamp: Date;
 
-  @Column()
+  @Column({ type: "double" })
   value: number;
 
   @ManyToOne(() => Device, {
