@@ -17,10 +17,10 @@ import { RmqModule } from "./rmq/rmq.module";
     RmqModule,
     TypeOrmModule.forRoot({
       type: "mysql",
-      host: "localhost", //mysql-debug
+      host: "mysql-debug", //localhost
       port: 3306,
       username: "root",
-      password: "password", //admin
+      password: "admin", //password
       database: "sd",
       autoLoadEntities: true,
       synchronize: true,
