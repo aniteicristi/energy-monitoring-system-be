@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package messages;
+
+service GrpcMessagingService {
+  rpc postMessage(TextMessage) returns (PostMessageResponse);
+  rpc getMessages(Conversation) returns (stream TextMessage);
+}
+
+message PostMessageResponse {
+  enum ResponseType {
+    OK = 0;
+    ERR = 1;
+  }
+  ResponseType type = 1;
+}
+
+message TextMessage {
+  enum MessageType {
+    CONTENT = 0;
+    TYPING_START = 1;
+    TYPING_END = 2;
+  }
+
+  int32 to = 1;
+  int32 from = 2;
+  string message = 3;
+  string createdAt = 4;
+  MessageType type = 5;
+}
+
+message Conversation {
+  int32 idOne = 1;
+  int32 idTwo = 2;
+}

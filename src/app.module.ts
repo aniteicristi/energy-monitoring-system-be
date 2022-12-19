@@ -6,6 +6,7 @@ import { AuthModule } from "./auth/auth.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { NotifierModule } from "./notifier/notifier.module";
 import { RmqModule } from "./rmq/rmq.module";
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -17,15 +18,16 @@ import { RmqModule } from "./rmq/rmq.module";
     RmqModule,
     TypeOrmModule.forRoot({
       type: "mysql",
-      host: "mysql-debug", //localhost
+      host: "localhost", //mysql-debug
       port: 3306,
       username: "root",
-      password: "admin", //password
+      password: "password", //admin
       database: "sd",
       autoLoadEntities: true,
       synchronize: true,
       entities: [],
     }),
+    MessagesModule,
   ],
   controllers: [],
   providers: [],

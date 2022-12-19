@@ -7,7 +7,7 @@ import { RmqService } from "./rmq.service";
   imports: [
     EnergyConsumptionModule,
     RabbitMQModule.forRoot(RabbitMQModule, {
-      uri: "amqp://rabbitmq:5672", //localhost
+      uri: "amqp://localhost:5672", //rabbitmq
     }),
     RmqModule,
   ],
