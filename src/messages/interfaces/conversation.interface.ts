@@ -1,4 +1,3 @@
-export interface Conversation {
-  idOne: number;
-  idTwo: number;
+export interface Client {
+  id: number;
 }

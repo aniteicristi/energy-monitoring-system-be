@@ -6,4 +6,5 @@ export interface TextMessage {
   from: number;
   message: string;
   createdAt: string;
+  seen: boolean;
 }
