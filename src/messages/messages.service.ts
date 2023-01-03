@@ -19,19 +19,11 @@ export class MessagesService {
     throw new Error("Method not implemented.");
   }
 
-  async createUpdateStream(data: Client): Promise<Observable<TextMessage>> {
+  createUpdateStream(data: Client): Observable<TextMessage> {
     const subject = new Subject<TextMessage>();
 
     this.subjects[data.id] = subject;
 
-    subject.next({
-      type: MessageType.CONTENT,
-      to: data.id,
-      from: 8,
-      message: "Hello my dude",
-      createdAt: new Date().toISOString(),
-      seen: true,
-    });
     return subject.asObservable();
   }
 

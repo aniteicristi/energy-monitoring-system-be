@@ -11,6 +11,7 @@ async function bootstrap() {
     options: {
       package: "messages",
       protoPath: join(__dirname, "proto/message.proto"),
+      url: "localhost:5000",
     },
   });
 

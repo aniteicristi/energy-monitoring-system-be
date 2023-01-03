@@ -9,7 +9,7 @@ import { Client } from "./interfaces/conversation.interface";
 import { Metadata, ServerDuplexStream } from "@grpc/grpc-js";
 import { ResponseType } from "./interfaces/response-type.enum";
 
-@Controller("messages")
+@Controller()
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
@@ -18,13 +18,14 @@ export class MessagesController {
     return this.messagesService.postMessage(data);
   }
 
-  @GrpcMethod("GrpcMessagingService", "postMessage")
+  @GrpcMethod("GrpcMessagingService", "getMessages")
   getMessages(data: Client): Promise<Response> {
     return this.messagesService.getMessages(data);
   }
 
-  @GrpcStreamMethod("GrpcMessagingService", "getUpdateStream")
-  getUpdates(data: Client, metadata: Metadata, call: ServerDuplexStream<any, any>): Promise<Observable<TextMessage>> {
+  @GrpcMethod("GrpcMessagingService", "getUpdateStream")
+  getUpdates(data: Client, metadata: Metadata, call: ServerDuplexStream<any, any>): Observable<TextMessage> {
+    console.log("reached!");
     return this.messagesService.createUpdateStream(data);
   }
 }
