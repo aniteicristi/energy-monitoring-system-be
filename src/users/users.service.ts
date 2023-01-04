@@ -57,6 +57,16 @@ export class UsersService {
     });
   }
 
+  async getAdmin() {
+    const admin = await this.userRepository.findOne({
+      where: {
+        role: "admin",
+      },
+    });
+    console.log(admin);
+    return admin;
+  }
+
   findByEmail(email: string) {
     return this.userRepository.findOne({ where: { email } });
   }

@@ -1,5 +1,7 @@
 import { User } from "src/users/entities/user.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { MessageType } from "../interfaces/message-type.enum";
+import { TextMessage } from "../interfaces/text-message.interface";
 
 @Entity()
 export class MessageRecord {
@@ -10,6 +12,7 @@ export class MessageRecord {
       this.to = params.to;
       this.content = params.content;
       this.createdAt = params.createdAt;
+      this.seen = params.seen;
     }
   }
 
@@ -33,4 +36,19 @@ export class MessageRecord {
 
   @Column({ type: "datetime" })
   createdAt: Date;
+
+  @Column({ default: false })
+  seen: boolean;
+
+  toProtoc(): TextMessage {
+    return {
+      type: MessageType.CONTENT,
+      to: this.to.id,
+      from: this.from.id,
+      message: this.content,
+      seen: this.seen,
+      createdAt: this.createdAt.toUTCString(),
+      id: this.id,
+    };
+  }
 }

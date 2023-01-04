@@ -7,4 +7,5 @@ export interface TextMessage {
   message: string;
   createdAt: string;
   seen: boolean;
+  id: number;
 }

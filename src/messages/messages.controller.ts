@@ -14,7 +14,7 @@ export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
   @GrpcMethod("GrpcMessagingService", "postMessage")
-  postMessage(data: TextMessage): Response {
+  postMessage(data: TextMessage): Promise<Response> {
     return this.messagesService.postMessage(data);
   }
 

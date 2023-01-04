@@ -38,6 +38,13 @@ export class UsersController {
     return request.user;
   }
 
+  @Roles(Role.User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get("/admin")
+  getAdmin() {
+    return this.usersService.getAdmin();
+  }
+
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(":id")
