@@ -1,16 +1,27 @@
 version: '3.9'
 services:
+  envoy:
+    container_name: 'envoy'
+    build: ./envoy
+    ports:
+      - 8080:8080
+    volumes:
+      - ./envoy/envoy.yaml:/config/envoy.yaml
+    networks:
+      - nestjs-network
+    depends_on:
+      - api
   rabbitmq:
-      image: rabbitmq:3-management-alpine
-      container_name: 'rabbitmq'
-      ports:
-          - 5672:5672
-          - 15672:15672
-      volumes:
-          - ./:/app/project/data/:/var/lib/rabbitmq
-          - ./:/app/project/log/:/var/log/rabbitmq
-      networks:
-          - nestjs-network
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./:/app/project/data/:/var/lib/rabbitmq
+      - ./:/app/project/log/:/var/log/rabbitmq
+    networks:
+      - nestjs-network
   mysql-debug:
     image: mysql:8
     container_name: db
@@ -37,11 +48,12 @@ services:
     #   context: ./
     #   target: "${NODE_ENV}"
     #   dockerfile: Dockerfile
-    entrypoint: ["npm", "run", "start:${NODE_ENV}"]
+    entrypoint: [ "npm", "run", "start:${NODE_ENV}" ]
     env_file:
       - .env
     ports:
       - 3000:3000
+      - 5000:5000
     networks:
       - nestjs-network
     volumes:
@@ -52,4 +64,4 @@ services:
 volumes:
   nestjs:
 networks:
-  nestjs-network: 
+  nestjs-network:
